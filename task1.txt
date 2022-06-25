@@ -1,0 +1,30 @@
+import requests
+from pprint import pprint
+url_hulk = 'https://akabab.github.io/superhero-api/api/id/332.json'
+url_captain_america = 'https://akabab.github.io/superhero-api/api/id/149.json'
+url_thanos = 'https://akabab.github.io/superhero-api/api/id/655.json'
+# Hulk
+response = requests.get(url_hulk)
+# print(response)
+hulk = response.json()
+intelligence_hulk = hulk['powerstats']['intelligence']
+# print(intelligence_hulk)
+# Captain America
+response2 = requests.get(url_captain_america)
+# print(response2.text)
+captain_america = response2.json()
+intelligence_captain_america = captain_america['powerstats']['intelligence']
+# print(intelligence_captain_america)
+#Thanos
+response3 = requests.get(url_thanos)
+thanos = response3.json()
+intelligence_thanos = thanos['powerstats']['intelligence']
+# print(intelligence_thanos)
+intelligence = max(intelligence_hulk, intelligence_captain_america, intelligence_thanos)
+# print(intelligence)
+if intelligence == intelligence_thanos:
+    print('Thanos')
+elif intelligence == intelligence_captain_america:
+    print('Captain America')
+else:
+    print('Hulk')
