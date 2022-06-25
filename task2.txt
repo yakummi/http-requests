@@ -1,0 +1,32 @@
+import requests
+import os
+
+class YandexUploader:
+    def __init__(self, token: str):
+        self.token = token
+
+    def _get_upload_link(self):
+        upload_url = 'https://cloud-api.yandex.net/v1/disk/resources/upload'
+        headers = {
+            'Authorization': f'OAuth {self.token}',
+            'Content-Type': 'application/json'
+        }
+        params = {'path': '/mywork.txt', "overwrite": "true"}
+        response = requests.get(upload_url, headers=headers, params=params)
+
+        return response.json()
+
+    def upload_file(self, path):
+        """Метод загружает файлы по списку file_list на яндекс диск"""
+        response_href = self._get_upload_link()
+        href = response_href.get('href', '')
+        response = requests.put(href, data=open(path, 'rb'))
+        response.raise_for_status()
+        if response.status_code == 201:
+            print('Download completed')
+# Task 2
+    # Получить путь к загружаемому файлу и токен от пользователя
+    path_to_file = os.path.join(os.getcwd(), 'work')
+    TOKEN = ''
+    yandex_disk = YandexUploader(TOKEN)
+    yandex_disk.upload_file(path_to_file)
